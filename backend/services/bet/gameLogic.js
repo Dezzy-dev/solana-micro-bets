@@ -3,8 +3,8 @@
  */
 
 import { Connection, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { getHouseKeypair } from './houseWallet.js';
-import { getSolanaConnection } from './solanaClient.js';
+import { getHouseKeypair } from '../../utils/houseWallet.js';
+import { getSolanaConnection } from '../../solana/solanaClient.js';
 
 // Import crypto module
 import crypto from 'crypto';
@@ -170,3 +170,4 @@ export async function resolveBetTransaction(pdaString, playerRoll, houseRoll, es
     playerWins,
   };
 }
+

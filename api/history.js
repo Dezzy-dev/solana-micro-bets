@@ -1,10 +1,9 @@
 /**
- * GET /api/history/[wallet]
+ * GET /api/history
  * Returns latest 50 bets for a given wallet
  */
 
-import { PublicKey } from '@solana/web3.js';
-import { getBetsByWallet } from '../lib/dbHelpers.js';
+import { getHistoryService } from '../backend/services/history/getHistoryService.js';
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -27,36 +26,20 @@ export default async function handler(req, res) {
 
   try {
     const { wallet } = req.query;
-
-    // Validate wallet format
-    if (!wallet) {
-      return res.status(400).json({
-        success: false,
-        error: 'Wallet address is required',
-      });
-    }
-
-    // Try to validate as a Solana public key
-    try {
-      new PublicKey(wallet);
-    } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid wallet address format',
-      });
-    }
-
-    // Get bets from database
-    const bets = await getBetsByWallet(wallet, 50);
-
-    res.json({
-      success: true,
-      bets,
-      count: bets.length,
-    });
+    const result = await getHistoryService(wallet);
+    return res.status(200).json(result);
   } catch (error) {
-    console.error('Error getting bet history:', error);
-    res.status(500).json({
+    console.error('History Error:', error);
+    
+    // Handle validation errors
+    if (error.message.includes('required') || error.message.includes('Invalid')) {
+      return res.status(400).json({
+        success: false,
+        error: error.message,
+      });
+    }
+    
+    return res.status(500).json({
       success: false,
       error: error.message || 'Failed to get bet history',
     });

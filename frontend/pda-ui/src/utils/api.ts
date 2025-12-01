@@ -35,7 +35,7 @@ export interface ResolveBetResponse {
 export async function createBet(
   request: CreateBetRequest
 ): Promise<CreateBetResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/bets/create`, {
+  const response = await fetch(`${API_BASE_URL}/api/create-bet`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export async function createBet(
 export async function resolveBet(
   request: ResolveBetRequest
 ): Promise<ResolveBetResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/bets/resolve`, {
+  const response = await fetch(`${API_BASE_URL}/api/resolve-bet`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
