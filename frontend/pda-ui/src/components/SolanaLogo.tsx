@@ -11,7 +11,7 @@ export function SolanaLogo({ width = 48, height = 48, className = '', circle = f
   if (useImage) {
     const logoImage = (
       <img
-        src="/assets/solana-logo.png"
+        src="/solana-logo.png"
         alt="Solana"
         width={width}
         height={height}

@@ -1,5 +1,3 @@
-const API_BASE = import.meta.env.VITE_PUBLIC_API_URL;
-
 export interface CreateBetRequest {
   playerPubkey: string;
   amountLamports: number;
@@ -35,7 +33,7 @@ export interface ResolveBetResponse {
 export async function createBet(
   request: CreateBetRequest
 ): Promise<CreateBetResponse> {
-  const response = await fetch(`${API_BASE}/create-bet`, {
+  const response = await fetch('/api/create-bet', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +51,7 @@ export async function createBet(
 export async function resolveBet(
   request: ResolveBetRequest
 ): Promise<ResolveBetResponse> {
-  const response = await fetch(`${API_BASE}/resolve-bet`, {
+  const response = await fetch('/api/resolve-bet', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
