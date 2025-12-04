@@ -1,7 +1,4 @@
-// Use empty string for relative paths (will use Vite proxy in dev)
-// In production, set VITE_PUBLIC_API_URL to your backend URL
-const API_BASE = import.meta.env.VITE_PUBLIC_API_URL || '';
-
+// Use relative paths - same domain deployment on Vercel
 export interface LeaderboardUser {
   wallet: string;
   total_wins: number;
