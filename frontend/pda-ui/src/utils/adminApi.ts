@@ -77,7 +77,7 @@ export interface ProfitLossResponse {
  * Get house balance (requires admin API key)
  */
 export async function getHouseBalance(apiKey: string): Promise<HouseBalanceResponse> {
-  const response = await fetch(`${API_BASE}/admin/house/balance`, {
+  const response = await fetch(`${API_BASE}/api/admin/house/balance`, {
     method: 'GET',
     headers: {
       'x-api-key': apiKey,
@@ -106,7 +106,7 @@ export async function getHouseBalance(apiKey: string): Promise<HouseBalanceRespo
  * Get max payout configuration (public endpoint)
  */
 export async function getMaxPayout(): Promise<MaxPayoutResponse> {
-  const response = await fetch(`${API_BASE}/house/max-payout`, {
+  const response = await fetch(`${API_BASE}/api/house/max-payout`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ export async function depositToHouse(
   apiKey: string,
   request: DepositRequest
 ): Promise<DepositResponse> {
-  const response = await fetch(`${API_BASE}/admin/house/deposit`, {
+  const response = await fetch(`${API_BASE}/api/admin/house/deposit`, {
     method: 'POST',
     headers: {
       'x-api-key': apiKey,
@@ -166,7 +166,7 @@ export async function withdrawFromHouse(
   apiKey: string,
   request: WithdrawRequest
 ): Promise<WithdrawResponse> {
-  const response = await fetch(`${API_BASE}/admin/house/withdraw`, {
+  const response = await fetch(`${API_BASE}/api/admin/house/withdraw`, {
     method: 'POST',
     headers: {
       'x-api-key': apiKey,
@@ -195,7 +195,7 @@ export async function withdrawFromHouse(
  * This will calculate from transaction logs
  */
 export async function getHouseProfitLoss(apiKey: string): Promise<ProfitLossResponse> {
-  const response = await fetch(`${API_BASE}/admin/house/profit-loss`, {
+  const response = await fetch(`${API_BASE}/api/admin/house/profit-loss`, {
     method: 'GET',
     headers: {
       'x-api-key': apiKey,
@@ -210,6 +210,54 @@ export async function getHouseProfitLoss(apiKey: string): Promise<ProfitLossResp
       errorMessage = errorData.error || errorMessage;
     } catch {
       errorMessage = `Failed to get profit/loss: ${response.status} ${response.statusText}. Make sure the backend server is running on port 3001.`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+export interface AdminStatsResponse {
+  success: boolean;
+  summary: {
+    totalBets: number;
+    winningBets: number;
+    losingBets: number;
+    totalPlayerLosses: number;  // Total money players lost (added to house)
+    totalPayouts: number;        // Total money paid to winners
+    netProfit: number;           // Net profit = player losses - payouts
+  };
+  betStats: Array<{
+    betTime: string;
+    userWallet: string;
+    betAmount: number;
+    outcome: string;
+    payout: number;
+    profit: number;
+  }>;
+  error?: string;
+}
+
+/**
+ * Get detailed admin statistics (requires admin API key)
+ */
+export async function getAdminStats(apiKey: string): Promise<AdminStatsResponse> {
+  const response = await fetch(`${API_BASE}/api/admin/stats`, {
+    method: 'GET',
+    headers: {
+      'x-api-key': apiKey,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to get admin stats';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      errorMessage = `Failed to get admin stats: ${response.status} ${response.statusText}`;
     }
     throw new Error(errorMessage);
   }

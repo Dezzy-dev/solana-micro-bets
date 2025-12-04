@@ -13,6 +13,7 @@ import {
 } from '../utils/adminApi';
 import { ErrorToast } from '../components/ErrorToast';
 import { SuccessToast } from '../components/SuccessToast';
+import { AdminStats } from '../components/AdminStats';
 
 const ADMIN_KEY_STORAGE = 'admin-api-key-session'; // Session storage, not localStorage
 
@@ -439,6 +440,14 @@ export function AdminDashboard() {
               </button>
             </form>
           </div>
+        </div>
+
+        {/* Admin Statistics Section */}
+        <div className="mt-8">
+          <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 mb-6">
+            HOUSE STATISTICS
+          </h2>
+          <AdminStats apiKey={apiKey} />
         </div>
       </div>
 
