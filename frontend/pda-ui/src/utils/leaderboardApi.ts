@@ -29,7 +29,8 @@ export async function getLeaderboard(
   orderBy: 'wins' | 'earned' = 'wins'
 ): Promise<LeaderboardResponse> {
   const limitClamped = Math.min(Math.max(1, limit), 100); // Between 1 and 100
-  const url = `${API_BASE}/api/leaderboard?limit=${limitClamped}&orderBy=${orderBy}`;
+  // Use relative path (same domain) - API_BASE should be empty for same-domain deployment
+  const url = `/api/leaderboard?limit=${limitClamped}&orderBy=${orderBy}`;
 
   const response = await fetch(url, {
     method: 'GET',
