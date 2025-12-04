@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAdminStats, AdminStatsResponse } from '../utils/adminApi';
 import { ErrorToast } from './ErrorToast';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 interface AdminStatsProps {
   apiKey: string;
