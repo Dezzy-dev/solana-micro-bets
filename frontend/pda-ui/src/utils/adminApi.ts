@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_PUBLIC_API_URL;
+// Use empty string for relative paths (will use Vite proxy in dev)
+// In production, set VITE_PUBLIC_API_URL to your backend URL
+const API_BASE = import.meta.env.VITE_PUBLIC_API_URL || '';
 
 export interface HouseBalanceResponse {
   success: boolean;
@@ -83,10 +85,20 @@ export async function getHouseBalance(apiKey: string): Promise<HouseBalanceRespo
     },
   });
 
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Failed to get house balance');
+    // Try to parse error from response
+    let errorMessage = 'Failed to get house balance';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      // If response is not JSON (like a 404 HTML page), use status text
+      errorMessage = `Failed to get house balance: ${response.status} ${response.statusText}. Make sure the backend server is running on port 3001.`;
+    }
+    throw new Error(errorMessage);
   }
+
+  const data = await response.json();
   return data;
 }
 
@@ -101,10 +113,18 @@ export async function getMaxPayout(): Promise<MaxPayoutResponse> {
     },
   });
 
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Failed to get max payout');
+    let errorMessage = 'Failed to get max payout';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      errorMessage = `Failed to get max payout: ${response.status} ${response.statusText}. Make sure the backend server is running on port 3001.`;
+    }
+    throw new Error(errorMessage);
   }
+
+  const data = await response.json();
   return data;
 }
 
@@ -124,10 +144,18 @@ export async function depositToHouse(
     body: JSON.stringify(request),
   });
 
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Failed to deposit to house wallet');
+    let errorMessage = 'Failed to deposit to house wallet';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      errorMessage = `Failed to deposit: ${response.status} ${response.statusText}. Make sure the backend server is running on port 3001.`;
+    }
+    throw new Error(errorMessage);
   }
+
+  const data = await response.json();
   return data;
 }
 
@@ -147,10 +175,18 @@ export async function withdrawFromHouse(
     body: JSON.stringify(request),
   });
 
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Failed to withdraw from house wallet');
+    let errorMessage = 'Failed to withdraw from house wallet';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      errorMessage = `Failed to withdraw: ${response.status} ${response.statusText}. Make sure the backend server is running on port 3001.`;
+    }
+    throw new Error(errorMessage);
   }
+
+  const data = await response.json();
   return data;
 }
 
@@ -167,10 +203,18 @@ export async function getHouseProfitLoss(apiKey: string): Promise<ProfitLossResp
     },
   });
 
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Failed to get profit/loss');
+    let errorMessage = 'Failed to get profit/loss';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      errorMessage = `Failed to get profit/loss: ${response.status} ${response.statusText}. Make sure the backend server is running on port 3001.`;
+    }
+    throw new Error(errorMessage);
   }
+
+  const data = await response.json();
   return data;
 }
 

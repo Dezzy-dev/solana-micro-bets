@@ -13,6 +13,7 @@ import { FirstTimeHeroModal, hasSeenOnboarding } from '../components/onboarding/
 import { HowItWorksModal } from '../components/onboarding/HowItWorksModal';
 import { BetHistoryModal } from '../components/game/BetHistoryModal';
 import { saveBetToHistory } from '../utils/betHistory';
+import { Leaderboard } from '../components/Leaderboard';
 
 const BET_AMOUNTS = [0.05, 0.1, 0.25, 0.5];
 
@@ -361,25 +362,35 @@ export function Game() {
           </div>
         </header>
 
-        {/* Wallet connection prompt */}
+        {/* Wallet connection prompt with leaderboard */}
         {!publicKey && (
-          <div className="max-w-md mx-auto mt-10 md:mt-20 text-center px-4">
-            <div className="bg-gradient-to-br from-cyan-900/30 via-purple-900/30 to-cyan-900/30 backdrop-blur-xl border-2 border-cyan-400/50 rounded-3xl p-8 md:p-12 shadow-[0_0_50px_rgba(0,255,255,0.3)]">
-              <div className="text-5xl md:text-6xl mb-4 md:mb-6">🎲</div>
-              <h2 className="text-2xl md:text-3xl font-bold text-cyan-400 mb-3 md:mb-4">Connect Your Wallet</h2>
-              <p className="text-cyan-300/70 text-sm md:text-base mb-6 md:mb-8">Connect your Solana wallet to start playing Cyber Dice Protocol</p>
-              <div className="flex justify-center">
-                <WalletMultiButton className="!bg-gradient-to-r !from-cyan-500 !to-purple-500 hover:!from-cyan-400 hover:!to-purple-400 !text-black !font-bold !rounded-lg !border-2 !border-cyan-400/50 !px-6 md:!px-8 !py-3 md:!py-4 !text-sm md:!text-lg" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mt-10 md:mt-20">
+            <div className="lg:col-span-2 flex items-center justify-center">
+              <div className="max-w-md w-full text-center px-4">
+                <div className="bg-gradient-to-br from-cyan-900/30 via-purple-900/30 to-cyan-900/30 backdrop-blur-xl border-2 border-cyan-400/50 rounded-3xl p-8 md:p-12 shadow-[0_0_50px_rgba(0,255,255,0.3)]">
+                  <div className="text-5xl md:text-6xl mb-4 md:mb-6">🎲</div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-cyan-400 mb-3 md:mb-4">Connect Your Wallet</h2>
+                  <p className="text-cyan-300/70 text-sm md:text-base mb-6 md:mb-8">Connect your Solana wallet to start playing Cyber Dice Protocol</p>
+                  <div className="flex justify-center">
+                    <WalletMultiButton className="!bg-gradient-to-r !from-cyan-500 !to-purple-500 hover:!from-cyan-400 hover:!to-purple-400 !text-black !font-bold !rounded-lg !border-2 !border-cyan-400/50 !px-6 md:!px-8 !py-3 md:!py-4 !text-sm md:!text-lg" />
+                  </div>
+                </div>
               </div>
+            </div>
+            {/* Leaderboard - visible even when not connected */}
+            <div className="lg:col-span-1">
+              <Leaderboard limit={10} />
             </div>
           </div>
         )}
 
         {/* Game interface */}
         {publicKey && (
-          <div className="space-y-6 md:space-y-8">
-            {/* Bet amount selector */}
-            <div className="max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+            {/* Main game area - takes 2 columns on large screens */}
+            <div className="lg:col-span-2 space-y-6 md:space-y-8">
+              {/* Bet amount selector */}
+              <div className="max-w-2xl mx-auto">
               <div className="bg-black/40 border border-cyan-400/30 rounded-2xl p-4 md:p-6 backdrop-blur-sm">
                 <p className="text-cyan-300 text-center mb-3 md:mb-4 font-semibold text-sm md:text-base">SELECT BET AMOUNT</p>
                 <div className="flex justify-center gap-2 md:gap-4 flex-wrap">
@@ -430,6 +441,12 @@ export function Game() {
               >
                 {isRolling || loading ? 'ROLLING...' : 'ROLL THE DICE'}
               </button>
+            </div>
+            </div>
+
+            {/* Leaderboard - takes 1 column on large screens */}
+            <div className="lg:col-span-1">
+              <Leaderboard limit={10} />
             </div>
           </div>
         )}

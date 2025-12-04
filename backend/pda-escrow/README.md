@@ -23,6 +23,7 @@ RPC_URL=https://api.devnet.solana.com
 PORT=3001
 BET_TIMEOUT_SECONDS=3600
 DEFAULT_SAFETY_FACTOR=0.9
+WIN_THRESHOLD=9
 ADMIN_API_KEY=your-secret-admin-api-key-here
 ```
 
@@ -32,11 +33,58 @@ ADMIN_API_KEY=your-secret-admin-api-key-here
 - `RPC_URL` - Optional. Solana RPC endpoint (default: https://api.devnet.solana.com).
 - `PORT` - Optional. Server port (default: 3001).
 - `BET_TIMEOUT_SECONDS` - Optional. Bet timeout in seconds (default: 3600).
+- `WIN_THRESHOLD` - Optional. Minimum total roll (playerRoll + houseRoll) for player to win (default: 9). Must be between 2 and 12.
+  - Threshold 8: Player wins ~41.67%, House wins ~58.33%
+  - Threshold 9: Player wins ~27.78%, House wins ~72.22% (default - strong house edge)
+  - Threshold 10: Player wins ~16.67%, House wins ~83.33%
 
 3. Create a `house.json` file with the house keypair (array format):
 ```json
 [1,2,3,...]
 ```
+
+## Game Mechanics
+
+### How It Works
+
+1. Player places a bet by transferring SOL to a PDA escrow account
+2. Both player and house roll dice (1-6 each)
+3. Total roll = playerRoll + houseRoll (ranges from 2 to 12)
+4. **Player wins if totalRoll >= WIN_THRESHOLD**
+5. If player wins, they receive a 5.5x payout from the house
+
+### Win Odds
+
+The win threshold determines the house edge. With two dice (1-6 each):
+
+- **Threshold 8**: Player wins on sums 8, 9, 10, 11, 12
+  - Player win rate: ~41.67% (15/36 combinations)
+  - House win rate: ~58.33% (21/36 combinations)
+  
+- **Threshold 9** (Default): Player wins on sums 9, 10, 11, 12
+  - Player win rate: ~27.78% (10/36 combinations)
+  - House win rate: ~72.22% (26/36 combinations)
+  - **Strong house edge - recommended for profitability**
+
+- **Threshold 10**: Player wins on sums 10, 11, 12
+  - Player win rate: ~16.67% (6/36 combinations)
+  - House win rate: ~83.33% (30/36 combinations)
+  - Very strong house edge
+
+### Payout
+
+- Winning players receive **5.5x** their bet amount
+- Losing players lose their bet (no refund)
+- Payouts come from the house vault account
+
+### Example
+
+Player bets 0.1 SOL:
+- Player rolls: 4
+- House rolls: 5
+- Total roll: 9
+- With threshold 9: **Player wins!**
+- Payout: 0.1 × 5.5 = **0.55 SOL**
 
 ## API Endpoints
 

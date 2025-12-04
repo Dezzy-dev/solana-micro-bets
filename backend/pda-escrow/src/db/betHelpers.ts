@@ -485,18 +485,21 @@ export async function getBetHistory(
 }
 
 /**
- * Get leaderboard - top users by total_earned
+ * Get leaderboard - top users by total_earned or total_wins
  * 
  * @param limit - Number of top users to return (default: 20)
+ * @param orderBy - Field to order by: 'wins' or 'earned' (default: 'wins')
  * @returns Promise resolving to array of user records
  */
-export async function getLeaderboard(limit: number = 20): Promise<User[]> {
+export async function getLeaderboard(limit: number = 20, orderBy: 'wins' | 'earned' = 'wins'): Promise<User[]> {
   const supabase = getSupabaseClient();
+
+  const orderField = orderBy === 'wins' ? 'total_wins' : 'total_earned';
 
   const { data, error } = await supabase
     .from('users')
     .select('*')
-    .order('total_earned', { ascending: false })
+    .order(orderField, { ascending: false })
     .limit(limit);
 
   if (error) {

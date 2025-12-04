@@ -33,7 +33,7 @@ export interface ResolveBetResponse {
 export async function createBet(
   request: CreateBetRequest
 ): Promise<CreateBetResponse> {
-  const response = await fetch('/api/create-bet', {
+  const response = await fetch('/api/bets/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -41,17 +41,27 @@ export async function createBet(
     body: JSON.stringify(request),
   });
 
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Failed to create bet');
+    // Try to parse error from response
+    let errorMessage = 'Failed to create bet';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      // If response is not JSON (like a 404 HTML page), use status text
+      errorMessage = `Failed to create bet: ${response.status} ${response.statusText}`;
+    }
+    throw new Error(errorMessage);
   }
+
+  const data = await response.json();
   return data;
 }
 
 export async function resolveBet(
   request: ResolveBetRequest
 ): Promise<ResolveBetResponse> {
-  const response = await fetch('/api/resolve-bet', {
+  const response = await fetch('/api/bets/resolve', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -59,10 +69,20 @@ export async function resolveBet(
     body: JSON.stringify(request),
   });
 
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Failed to resolve bet');
+    // Try to parse error from response
+    let errorMessage = 'Failed to resolve bet';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch {
+      // If response is not JSON (like a 404 HTML page), use status text
+      errorMessage = `Failed to resolve bet: ${response.status} ${response.statusText}`;
+    }
+    throw new Error(errorMessage);
   }
+
+  const data = await response.json();
   return data;
 }
 

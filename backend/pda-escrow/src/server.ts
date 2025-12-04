@@ -293,6 +293,7 @@ app.post('/api/bets/resolve', async (req: Request, res: Response) => {
       pdaParsed,
       playerRoll,
       houseRoll,
+      config.winThreshold, // Pass win threshold from config
       escrowData // Pass escrow data from in-memory store
     );
 
@@ -507,20 +508,26 @@ app.get('/api/history/:wallet', async (req: Request, res: Response) => {
 
 /**
  * GET /api/leaderboard
- * Returns top 20 users ordered by total_earned DESC
+ * Returns top users ordered by wins (default) or earned
+ * Query params:
+ *   - limit: number of users to return (default: 20, max: 100)
+ *   - orderBy: 'wins' or 'earned' (default: 'wins')
  */
 app.get('/api/leaderboard', async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 20;
     const limitClamped = Math.min(Math.max(1, limit), 100); // Between 1 and 100
+    
+    const orderBy = (req.query.orderBy as string) === 'earned' ? 'earned' : 'wins';
 
     // Get leaderboard from database
-    const leaderboard = await getLeaderboard(limitClamped);
+    const leaderboard = await getLeaderboard(limitClamped, orderBy);
 
     res.json({
       success: true,
       leaderboard,
       count: leaderboard.length,
+      orderBy,
     });
   } catch (error: any) {
     console.error('Error getting leaderboard:', error);
@@ -730,6 +737,7 @@ const PORT = config.port;
     console.log(`📡 RPC URL: ${config.rpcUrl}`);
     console.log(`🏠 House Pubkey: ${config.houseKeypair.publicKey.toBase58()}`);
     console.log(`⏱️  Bet Timeout: ${config.betTimeoutSeconds} seconds`);
+    console.log(`🎲 Win Threshold: ${config.winThreshold} (Player wins if totalRoll >= ${config.winThreshold})`);
     console.log(`\nAvailable endpoints:`);
     console.log(`  POST /api/bets/create`);
     console.log(`  POST /api/bets/resolve`);

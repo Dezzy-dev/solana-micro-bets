@@ -147,7 +147,9 @@ The app uses `@solana/wallet-adapter-react` for wallet integration:
 
 ## Betting Rules
 
-- **Player Wins**: If `playerRoll + houseRoll >= 7`
+- **Player Wins**: If `playerRoll + houseRoll >= WIN_THRESHOLD` (default: 9, configurable on backend)
+  - Default threshold 9: Player wins ~27.78%, House wins ~72.22% (strong house edge)
+  - Threshold can be configured via `WIN_THRESHOLD` environment variable on backend
 - **Payout**: 5.5x the bet amount if player wins
 - **Nonce**: Must be unique per player (0-255)
 

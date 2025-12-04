@@ -12,5 +12,25 @@ export default defineConfig({
       buffer: 'buffer',
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      },
+      // Proxy admin API endpoints only - use a function to be more specific
+      '/admin/house': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/house': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })
 

@@ -137,9 +137,9 @@ export function FirstTimeHeroModal({ onClose }: FirstTimeHeroModalProps) {
                     <div className="bg-black/40 rounded-lg p-3 border border-purple-400/20">
                       <p className="text-purple-300/90 font-semibold mb-1">Winning Condition:</p>
                       <p className="text-purple-400 font-bold text-lg">
-                        If <span className="text-cyan-400">(Your Roll + House Roll) ≥ 7</span> → You Win!
+                        If <span className="text-cyan-400">(Your Roll + House Roll) ≥ 9</span> → You Win!
                       </p>
-                      <p className="text-purple-300/70 text-xs mt-1">Otherwise, the house wins.</p>
+                      <p className="text-purple-300/70 text-xs mt-1">Otherwise, the house wins. (Threshold configurable by house)</p>
                     </div>
                   </div>
                 </div>

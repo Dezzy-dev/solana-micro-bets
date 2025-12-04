@@ -110,6 +110,7 @@ export async function resolveBet(
   pdaPubkey: PublicKey,
   playerRoll: number,
   houseRoll: number,
+  winThreshold: number,
   escrowData?: EscrowAccountData
 ): Promise<{ signature: string; payout: bigint; playerWins: boolean }> {
   // Fetch PDA account to verify it exists and get balance
@@ -149,9 +150,11 @@ export async function resolveBet(
 
   // Calculate result
   const totalRoll = playerRoll + houseRoll;
-  // Player wins if sum >= 8 (more balanced odds)
-  // With 5.5x payout: P(win) ≈ 41.67%, P(lose) ≈ 58.33% (better house edge)
-  const playerWins = totalRoll >= 8;
+  // Player wins if sum >= winThreshold (configurable)
+  // Default threshold 9: P(win) ≈ 27.78%, P(lose) ≈ 72.22% (strong house edge)
+  // Threshold 8: P(win) ≈ 41.67%, P(lose) ≈ 58.33%
+  // Threshold 10: P(win) ≈ 16.67%, P(lose) ≈ 83.33%
+  const playerWins = totalRoll >= winThreshold;
 
   let payout = BigInt(0);
   const transaction = new Transaction();
