@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE = import.meta.env.VITE_PUBLIC_API_URL || 'http://localhost:3001';
 
 export interface CreateBetRequest {
   playerPubkey: string;
@@ -35,7 +35,7 @@ export interface ResolveBetResponse {
 export async function createBet(
   request: CreateBetRequest
 ): Promise<CreateBetResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/create-bet`, {
+  const response = await fetch(`${API_BASE}/api/create-bet`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export async function createBet(
 export async function resolveBet(
   request: ResolveBetRequest
 ): Promise<ResolveBetResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/resolve-bet`, {
+  const response = await fetch(`${API_BASE}/api/resolve-bet`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

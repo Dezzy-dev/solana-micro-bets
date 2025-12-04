@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE = import.meta.env.VITE_PUBLIC_API_URL || 'http://localhost:3001';
 
 export interface HouseBalanceResponse {
   success: boolean;
@@ -75,7 +75,7 @@ export interface ProfitLossResponse {
  * Get house balance (requires admin API key)
  */
 export async function getHouseBalance(apiKey: string): Promise<HouseBalanceResponse> {
-  const response = await fetch(`${API_BASE_URL}/admin/house/balance`, {
+  const response = await fetch(`${API_BASE}/admin/house/balance`, {
     method: 'GET',
     headers: {
       'x-api-key': apiKey,
@@ -94,7 +94,7 @@ export async function getHouseBalance(apiKey: string): Promise<HouseBalanceRespo
  * Get max payout configuration (public endpoint)
  */
 export async function getMaxPayout(): Promise<MaxPayoutResponse> {
-  const response = await fetch(`${API_BASE_URL}/house/max-payout`, {
+  const response = await fetch(`${API_BASE}/house/max-payout`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export async function depositToHouse(
   apiKey: string,
   request: DepositRequest
 ): Promise<DepositResponse> {
-  const response = await fetch(`${API_BASE_URL}/admin/house/deposit`, {
+  const response = await fetch(`${API_BASE}/admin/house/deposit`, {
     method: 'POST',
     headers: {
       'x-api-key': apiKey,
@@ -138,7 +138,7 @@ export async function withdrawFromHouse(
   apiKey: string,
   request: WithdrawRequest
 ): Promise<WithdrawResponse> {
-  const response = await fetch(`${API_BASE_URL}/admin/house/withdraw`, {
+  const response = await fetch(`${API_BASE}/admin/house/withdraw`, {
     method: 'POST',
     headers: {
       'x-api-key': apiKey,
@@ -159,7 +159,7 @@ export async function withdrawFromHouse(
  * This will calculate from transaction logs
  */
 export async function getHouseProfitLoss(apiKey: string): Promise<ProfitLossResponse> {
-  const response = await fetch(`${API_BASE_URL}/admin/house/profit-loss`, {
+  const response = await fetch(`${API_BASE}/admin/house/profit-loss`, {
     method: 'GET',
     headers: {
       'x-api-key': apiKey,

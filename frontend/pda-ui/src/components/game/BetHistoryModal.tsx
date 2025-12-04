@@ -7,7 +7,6 @@ import {
   shortenBetId,
   BetHistoryEntry,
 } from '../../utils/betHistory';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 interface BetHistoryModalProps {
   isOpen: boolean;
