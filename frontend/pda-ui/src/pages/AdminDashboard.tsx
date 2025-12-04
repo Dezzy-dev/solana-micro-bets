@@ -295,11 +295,11 @@ export function AdminDashboard() {
             {houseBalance ? (
               <div>
                 <p className="text-3xl font-black text-cyan-400 mb-1">
-                  {houseBalance.sol.toFixed(4)} SOL
+                  {(houseBalance.sol ?? 0).toFixed(4)} SOL
                 </p>
-                <p className="text-cyan-300/50 text-xs">{houseBalance.lamports.toLocaleString()} lamports</p>
+                <p className="text-cyan-300/50 text-xs">{(houseBalance.lamports ?? 0).toLocaleString()} lamports</p>
                 <p className="text-cyan-300/50 text-xs mt-2 font-mono truncate">
-                  {houseBalance.housePubkey}
+                  {houseBalance.housePubkey || 'N/A'}
                 </p>
               </div>
             ) : (
@@ -316,10 +316,10 @@ export function AdminDashboard() {
             {maxPayout ? (
               <div>
                 <p className="text-3xl font-black text-purple-400 mb-1">
-                  {maxPayout.maxPayoutSOL.toFixed(4)} SOL
+                  {(maxPayout.maxPayoutSOL ?? 0).toFixed(4)} SOL
                 </p>
                 <p className="text-purple-300/50 text-xs">
-                  Safety Factor: {(maxPayout.safetyFactor * 100).toFixed(0)}%
+                  Safety Factor: {((maxPayout.safetyFactor ?? 0) * 100).toFixed(0)}%
                 </p>
               </div>
             ) : (
@@ -337,14 +337,14 @@ export function AdminDashboard() {
               <div>
                 <p
                   className={`text-3xl font-black mb-1 ${
-                    profitLoss.profitLossSOL >= 0 ? 'text-green-400' : 'text-red-400'
+                    (profitLoss.profitLossSOL ?? 0) >= 0 ? 'text-green-400' : 'text-red-400'
                   }`}
                 >
-                  {profitLoss.profitLossSOL >= 0 ? '+' : ''}
-                  {profitLoss.profitLossSOL.toFixed(4)} SOL
+                  {(profitLoss.profitLossSOL ?? 0) >= 0 ? '+' : ''}
+                  {(profitLoss.profitLossSOL ?? 0).toFixed(4)} SOL
                 </p>
                 <p className="text-green-300/50 text-xs">
-                  Deposits: {profitLoss.totalDepositsSOL.toFixed(4)} | Payouts: {profitLoss.totalPayoutsSOL.toFixed(4)}
+                  Deposits: {(profitLoss.totalDepositsSOL ?? 0).toFixed(4)} | Payouts: {(profitLoss.totalPayoutsSOL ?? 0).toFixed(4)}
                 </p>
               </div>
             ) : (
@@ -361,7 +361,7 @@ export function AdminDashboard() {
             {profitLoss ? (
               <div>
                 <p className="text-3xl font-black text-yellow-400 mb-1">
-                  {profitLoss.totalWithdrawalsSOL.toFixed(4)} SOL
+                  {(profitLoss.totalWithdrawalsSOL ?? 0).toFixed(4)} SOL
                 </p>
                 <p className="text-yellow-300/50 text-xs">Total withdrawn</p>
               </div>

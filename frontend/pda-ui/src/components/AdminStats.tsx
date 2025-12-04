@@ -40,12 +40,20 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
     );
   }
 
-  if (!stats) {
+  if (!stats || !stats.summary) {
     return null;
   }
 
   const { summary } = stats;
-  const netProfitColor = summary.netProfit >= 0 ? 'text-green-400' : 'text-red-400';
+  // Provide default values to prevent undefined errors
+  const totalPlayerLosses = summary.totalPlayerLosses ?? 0;
+  const totalPayouts = summary.totalPayouts ?? 0;
+  const netProfit = summary.netProfit ?? 0;
+  const totalBets = summary.totalBets ?? 0;
+  const winningBets = summary.winningBets ?? 0;
+  const losingBets = summary.losingBets ?? 0;
+  
+  const netProfitColor = netProfit >= 0 ? 'text-green-400' : 'text-red-400';
 
   return (
     <div className="space-y-6">
@@ -60,7 +68,7 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
             <div className="text-green-400">💰</div>
           </div>
           <div className="text-2xl font-bold text-green-400">
-            {summary.totalPlayerLosses.toFixed(4)} SOL
+            {totalPlayerLosses.toFixed(4)} SOL
           </div>
           <p className="text-xs text-gray-500 mt-1">
             Money players lost (added to house wallet)
@@ -74,7 +82,7 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
             <div className="text-red-400">💸</div>
           </div>
           <div className="text-2xl font-bold text-red-400">
-            {summary.totalPayouts.toFixed(4)} SOL
+            {totalPayouts.toFixed(4)} SOL
           </div>
           <p className="text-xs text-gray-500 mt-1">
             Money paid to winning players
@@ -82,15 +90,15 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
         </div>
 
         {/* Net Profit */}
-        <div className={`bg-gradient-to-br ${summary.netProfit >= 0 ? 'from-green-900/30 to-green-800/20 border-green-700/50' : 'from-red-900/30 to-red-800/20 border-red-700/50'} rounded-lg p-6 border`}>
+        <div className={`bg-gradient-to-br ${netProfit >= 0 ? 'from-green-900/30 to-green-800/20 border-green-700/50' : 'from-red-900/30 to-red-800/20 border-red-700/50'} rounded-lg p-6 border`}>
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium text-gray-400">Net Profit</h3>
             <div className={netProfitColor}>
-              {summary.netProfit >= 0 ? '📈' : '📉'}
+              {netProfit >= 0 ? '📈' : '📉'}
             </div>
           </div>
           <div className={`text-2xl font-bold ${netProfitColor}`}>
-            {summary.netProfit >= 0 ? '+' : ''}{summary.netProfit.toFixed(4)} SOL
+            {netProfit >= 0 ? '+' : ''}{netProfit.toFixed(4)} SOL
           </div>
           <p className="text-xs text-gray-500 mt-1">
             Player losses - Payouts
@@ -104,10 +112,10 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
             <div className="text-blue-400">🎲</div>
           </div>
           <div className="text-2xl font-bold text-blue-400">
-            {summary.totalBets}
+            {totalBets}
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            {summary.winningBets} wins, {summary.losingBets} losses
+            {winningBets} wins, {losingBets} losses
           </p>
         </div>
 
@@ -118,8 +126,8 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
             <div className="text-purple-400">🎯</div>
           </div>
           <div className="text-2xl font-bold text-purple-400">
-            {summary.totalBets > 0 
-              ? ((summary.losingBets / summary.totalBets) * 100).toFixed(1)
+            {totalBets > 0 
+              ? ((losingBets / totalBets) * 100).toFixed(1)
               : '0.0'}%
           </div>
           <p className="text-xs text-gray-500 mt-1">
@@ -134,8 +142,8 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
             <div className="text-yellow-400">📊</div>
           </div>
           <div className="text-2xl font-bold text-yellow-400">
-            {summary.losingBets > 0
-              ? (summary.totalPlayerLosses / summary.losingBets).toFixed(4)
+            {losingBets > 0
+              ? (totalPlayerLosses / losingBets).toFixed(4)
               : '0.0000'} SOL
           </div>
           <p className="text-xs text-gray-500 mt-1">
@@ -172,9 +180,13 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
               </thead>
               <tbody>
                 {stats.betStats.map((bet, index) => {
-                  const betTime = new Date(bet.betTime);
+                  const betTime = bet.betTime ? new Date(bet.betTime) : new Date();
                   const isWin = bet.outcome === 'win';
-                  const profitColor = bet.profit >= 0 ? 'text-green-400' : 'text-red-400';
+                  const betAmount = bet.betAmount ?? 0;
+                  const payout = bet.payout ?? 0;
+                  const profit = bet.profit ?? 0;
+                  const profitColor = profit >= 0 ? 'text-green-400' : 'text-red-400';
+                  const userWallet = bet.userWallet || '';
                   
                   return (
                     <tr key={index} className="border-b border-gray-700/50 hover:bg-gray-700/30">
@@ -182,10 +194,10 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
                         {betTime.toLocaleString()}
                       </td>
                       <td className="py-3 px-4 text-gray-300 font-mono text-xs">
-                        {bet.userWallet.slice(0, 8)}...{bet.userWallet.slice(-6)}
+                        {userWallet ? `${userWallet.slice(0, 8)}...${userWallet.slice(-6)}` : 'N/A'}
                       </td>
                       <td className="py-3 px-4 text-right text-gray-300">
-                        {bet.betAmount.toFixed(4)} SOL
+                        {betAmount.toFixed(4)} SOL
                       </td>
                       <td className="py-3 px-4 text-center">
                         <span className={`px-2 py-1 rounded text-xs font-medium ${
@@ -193,14 +205,14 @@ export function AdminStats({ apiKey }: AdminStatsProps) {
                             ? 'bg-green-900/50 text-green-400 border border-green-700' 
                             : 'bg-red-900/50 text-red-400 border border-red-700'
                         }`}>
-                          {bet.outcome.toUpperCase()}
+                          {bet.outcome ? bet.outcome.toUpperCase() : 'N/A'}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-right text-gray-300">
-                        {bet.payout > 0 ? `${bet.payout.toFixed(4)} SOL` : '-'}
+                        {payout > 0 ? `${payout.toFixed(4)} SOL` : '-'}
                       </td>
                       <td className={`py-3 px-4 text-right font-medium ${profitColor}`}>
-                        {bet.profit >= 0 ? '+' : ''}{bet.profit.toFixed(4)} SOL
+                        {profit >= 0 ? '+' : ''}{profit.toFixed(4)} SOL
                       </td>
                     </tr>
                   );
