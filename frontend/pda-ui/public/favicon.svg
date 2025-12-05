@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="dieGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6B46C1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle for better visibility -->
+  <circle cx="32" cy="32" r="30" fill="url(#dieGrad)" stroke="#1a1a2e" stroke-width="1"/>
+  
+  <!-- Simplified isometric die - optimized for small sizes -->
+  <!-- Top face (simplified) -->
+  <polygon points="20,16 44,16 48,28 24,28" fill="#ffffff" fill-opacity="0.9" stroke="#000" stroke-width="1.5"/>
+  <!-- Top pips (4 dots - simplified) -->
+  <circle cx="28" cy="20" r="2" fill="#000"/>
+  <circle cx="36" cy="20" r="2" fill="#000"/>
+  <circle cx="28" cy="24" r="2" fill="#000"/>
+  <circle cx="36" cy="24" r="2" fill="#000"/>
+  
+  <!-- Left face -->
+  <polygon points="20,16 24,28 24,48 20,36" fill="#6B46C1" stroke="#000" stroke-width="1.5"/>
+  <!-- Left pips (5 dots - simplified) -->
+  <circle cx="22" cy="28" r="1.5" fill="#fff"/>
+  <circle cx="22" cy="34" r="1.5" fill="#fff"/>
+  <circle cx="22" cy="40" r="1.5" fill="#fff"/>
+  <circle cx="23.5" cy="31" r="1.5" fill="#fff"/>
+  <circle cx="23.5" cy="37" r="1.5" fill="#fff"/>
+  
+  <!-- Right face -->
+  <polygon points="44,16 48,28 48,48 44,36" fill="#3B82F6" stroke="#000" stroke-width="1.5"/>
+  <!-- Right pips (3 dots - simplified) -->
+  <circle cx="46" cy="30" r="1.5" fill="#fff"/>
+  <circle cx="47" cy="36" r="1.5" fill="#fff"/>
+  <circle cx="46" cy="42" r="1.5" fill="#fff"/>
+</svg>
+
