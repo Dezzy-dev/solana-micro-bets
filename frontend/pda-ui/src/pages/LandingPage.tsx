@@ -89,7 +89,7 @@ export function LandingPage() {
                 PLAY NOW
               </Link>
               <a
-                href="https://github.com"
+                href="https://github.com/Dezzy-dev/solana-micro-bets.git"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-10 py-5 bg-black/60 border-2 border-cyan-400/50 text-cyan-400 font-bold text-xl rounded-xl hover:border-cyan-400 hover:bg-black/80 transition-all duration-300 hover:scale-105"
@@ -460,7 +460,7 @@ export function LandingPage() {
               {/* Right: Links */}
               <div className="flex flex-wrap justify-center md:justify-end gap-6">
                 <a
-                  href="https://github.com"
+                  href="https://github.com/Dezzy-dev/solana-micro-bets.git"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-cyan-400/70 hover:text-cyan-400 transition-colors flex items-center gap-2"
@@ -478,7 +478,7 @@ export function LandingPage() {
                   <span>Discord</span>
                 </a>
                 <a
-                  href="https://twitter.com"
+                  href="https://x.com/cyberdicehq"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-cyan-400/70 hover:text-cyan-400 transition-colors flex items-center gap-2"
@@ -487,7 +487,7 @@ export function LandingPage() {
                   <span>Twitter</span>
                 </a>
                 <a
-                  href="https://indie.fun"
+                  href="https://indie.fun/project-E8SU-XV7D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-cyan-400/70 hover:text-cyan-400 transition-colors flex items-center gap-2"
